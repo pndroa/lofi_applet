@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Liste der Radiosender
+declare -A STATIONS=(
+    ["Lofi Girl"]="https://play.streamafrica.net/lofiradio"
+    ["Chillhop"]="http://stream.zeno.fm/fyn8eh3h5f8uv"
+    ["Box Lofi"]="http://stream.zeno.fm/f3wvbbqmdg8uv"
+    ["The Bootleg Boy"]="http://stream.zeno.fm/0r0xa792kwzuv"
+    ["Radio Spinner"]="https://live.radiospinner.com/lofi-hip-hop-64"
+    ["SmoothChill"]="https://media-ssl.musicradio.com/SmoothChill"
+)
+
+start_radio() {
+    local station="$1"
+    
+    if [[ -n "${STATIONS[$station]}" ]]; then
+        pkill -f "mpv.*lofi"  # Vorherige Instanz beenden
+        nohup mpv --volume=60 --title="lofi" "${STATIONS[$station]}" > /dev/null 2>&1 & disown
+        notify-send "🎶 Rofi Beats" "Spielt jetzt: $station"
+    else
+        notify-send "❌ Fehler" "Ungültige Auswahl!"
+    fi
+}
+
+stop_radio() {
+    pkill -f "mpv.*lofi"
+    notify-send "🎵 Rofi Beats" "Wiedergabe gestoppt"
+}
+
+case "$1" in
+    stop) stop_radio ;;
+    start) start_radio "$2" ;;  # Direkt mit Sendernamen starten
+    *) echo "Nutze: /opt/lofi {start|stop} [Sendername]"; exit 1 ;;
+esac
+

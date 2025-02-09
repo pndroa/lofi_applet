@@ -1,0 +1,7 @@
+{
+    "uuid": "rofi-beats@lofi",
+    "name": "Rofi Beats",
+    "description": "Steuert dein Lofi Radio im Panel",
+    "version": "1.0",
+    "icon": "audio-x-generic"
+}
